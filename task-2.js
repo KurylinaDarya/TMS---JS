@@ -1,20 +1,25 @@
-/ task 1
-const getNumber = (numbers) => {
-  return numbers.map((item) => {
-    return item % 2 == 0 ? item + 1 : item - 1;
-  });
+// task 1
+const isEven = (number) => number % 2 === 0;
+
+const getResult = (numbers) => {
+  return numbers.map((number) => (isEven(number) ? number + 1 : number - 1));
 };
+
 console.log(getNumber(numbers));
 
 // task 2
-const helloWorld = (wordsList) => {
-  return wordsList.map((word) => {
-    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-  });
-};
-console.log(helloWorld(wordsList));
+const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
+
+const capitalizeWords = (words) => words.map((word) => capitalize(word));
+
+console.log(capitalizeWords(words));
 
 // task 3
+const removeByIds = (users, blackListIds) => {
+  return users.filter((user) => !blackListIds.includes(user.id));
+};
+
+console.log(removeByIds(users, [2]));
 
 // task 4
 const isPalindrome = (word) =>
@@ -24,35 +29,41 @@ console.log(isPalindrome("шалаш"));
 console.log(isPalindrome("Привет"));
 
 // task 5
-const getFullName = (users) => {
-  return users.map((item) => {
-    return {
-      id: item.id,
-      fullName: item.first_name + " " + item.last_name,
-      email: item.email,
-      gender: item.gender,
-      ip_address: item.ip_address,
-    };
-  });
+const divideByGeender = (users) => {
+  return users.reduce(
+    (accumulator, { first_name, last_name, ...otherFields }) => {
+      const userToPush = {
+        ...otherFields,
+        fullName: `${first_name} ${last_name}`,
+      };
+
+      if (userToPush.gender === "Male") {
+        accumulator.men.push(userToPush);
+      } else {
+        accumulator.women.push(userToPush);
+      }
+      return accumulator;
+    },
+    { men: [], women: [] }
+  );
 };
-console.log(getFullName(users));
+console.log(divideByGeender(customers));
 
 // task 6
-const withoutSomeItem = (newReleases) => {
-  return newReleases.map((item) => {
-    return {
-      id: item.id,
-      title: item.title,
-    };
-  });
+const mapReleases = (releases) => {
+  return releases.map(({ id, title }) => ({ id, title }));
 };
-console.log(withoutSomeItem(newReleases));
+console.log(mapReleases(releases));
 
 //task 7
-const getVideoRating = (videoList) => {
-  const maxRating = 5.0;
-  return videoList.filter((item) => {
-    return item.rating === maxRating;
+const getToprateReleasesIds = (releases) => {
+  const result = [];
+
+  releases.forEach(({ id, rating }) => {
+    if (rating[0] === 5) {
+      result.push(id);
+    }
   });
+  return result;
 };
-console.log(getVideoRating(videoList));
+console.log(getToprateReleasesIds(newReleases));
